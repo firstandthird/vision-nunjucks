@@ -4,7 +4,8 @@
   "description": "Nunjucks support for vision",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run lint && tap test/index.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,16 @@
   "dependencies": {
     "lodash.defaults": "^4.2.0",
     "nunjucks": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "3.18.0",
+    "eslint-config-firstandthird": "3.3.0",
+    "eslint-plugin-import": "2.2.0",
+    "hapi": "16.1.0",
+    "tap": "10.3.0",
+    "vision": "4.1.1"
+  },
+  "eslintConfig": {
+    "extends": "firstandthird"
   }
 }

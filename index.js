@@ -1,5 +1,6 @@
+'use strict';
 const Nunjucks = require('nunjucks');
-const _defaults = require('lodash.defaults');
+const defaults = require('lodash.defaults');
 
 let wrapper = {};
 let env = undefined;
@@ -41,6 +42,6 @@ wrapper.registerHelper = function (name, helper) {
   });
 };
 
-wrapper = _defaults(wrapper, Nunjucks);
+wrapper = defaults(wrapper, Nunjucks);
 
 exports = module.exports = wrapper;
