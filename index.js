@@ -4,10 +4,12 @@ const defaults = require('lodash.defaults');
 
 let wrapper = {};
 let env = undefined;
+let compileMode = null;
+const helpers = [];
 
 wrapper.compile = function (src, options, callback) {
   const asyncCompileMode = (typeof callback === 'function');
-  const template = Nunjucks.compile(src, env || options.environment, (Object.hasOwnProperty(options, 'filename') ? options.filename : null));
+  const template = Nunjucks.compile(src, env, (Object.hasOwnProperty(options, 'filename') ? options.filename : null));
 
   if (asyncCompileMode) {
     const renderer = function (context, opts, next) {
@@ -23,23 +25,16 @@ wrapper.compile = function (src, options, callback) {
 };
 
 wrapper.prepare = function (options, next) {
-  options.compileOptions.environment = env || Nunjucks.configure(options.path, { watch: false });
+  compileMode = options.compileMode;
+  env = Nunjucks.configure(options.path, { watch: false });
+  helpers.forEach((helper) => {
+    env.addFilter(helper.name, helper.fn, (compileMode !== 'sync'));
+  });
   return next();
 };
 
-wrapper.configure = function (path, options) {
-  if (env) return env;
-  env = Nunjucks.configure(path, options || { watch: false });
-  return env;
-};
-
 wrapper.registerHelper = function (name, helper) {
-  helper(function() {
-    const e = wrapper.configure(this.server.settings.app.views.path);
-    e.addFilter(name, (...args) => {
-      this.helper.apply(this, [this.server.root, ...args]);
-    }, true);
-  });
+  helpers.push({ name, fn: helper });
 };
 
 wrapper = defaults(wrapper, Nunjucks);
