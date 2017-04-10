@@ -98,3 +98,30 @@ tap.test('manually add helper', (test) => {
     test.end();
   });
 });
+
+tap.test('compileOptions', (test) => {
+  server.views({
+    engines: {
+      njk: visionNunjucks
+    },
+    path: `${__dirname}/views`,
+    compileOptions: {
+      throwOnUndefined: true
+    }
+  });
+  server.route({
+    path: '/',
+    method: 'get',
+    handler: {
+      view: {
+        template: 'test-compileopts'
+      }
+    }
+  });
+  server.inject({
+    url: '/'
+  }, (res) => {
+    test.equal(res.statusCode, 500);
+    test.end();
+  });
+});

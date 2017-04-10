@@ -9,7 +9,8 @@ const helpers = [];
 
 wrapper.compile = function (src, options, callback) {
   const asyncCompileMode = (typeof callback === 'function');
-  const template = Nunjucks.compile(src, env, (Object.hasOwnProperty(options, 'filename') ? options.filename : null));
+  const filename = Object.hasOwnProperty(options, 'filename') ? options.filename : null;
+  const template = Nunjucks.compile(src, env, filename);
 
   if (asyncCompileMode) {
     const renderer = function (context, opts, next) {
@@ -26,7 +27,8 @@ wrapper.compile = function (src, options, callback) {
 
 wrapper.prepare = function (options, next) {
   compileMode = options.compileMode;
-  env = Nunjucks.configure(options.path, { watch: false });
+  const config = Object.assign({ watch: false }, options.compileOptions);
+  env = Nunjucks.configure(options.path, config);
   helpers.forEach((helper) => {
     env.addFilter(helper.name, helper.fn, (compileMode !== 'sync'));
   });
