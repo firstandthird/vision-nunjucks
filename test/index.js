@@ -6,6 +6,7 @@ const Hapi = require('hapi');
 
 let server;
 tap.beforeEach((done) => {
+  visionNunjucks.clearEnvironment();
   server = new Hapi.Server();
   server.connection();
 
