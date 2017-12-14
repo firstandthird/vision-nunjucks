@@ -22,16 +22,15 @@
   },
   "homepage": "https://github.com/firstandthird/vision-nunjucks#readme",
   "dependencies": {
-    "lodash.defaults": "^4.2.0",
-    "nunjucks": "^3.0.0"
+    "nunjucks": "^3.0.1"
   },
   "devDependencies": {
-    "eslint": "3.18.0",
-    "eslint-config-firstandthird": "3.3.0",
-    "eslint-plugin-import": "2.2.0",
-    "hapi": "16.1.0",
+    "eslint": "^4.13.1",
+    "eslint-config-firstandthird": "^4.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "hapi": "^17.1.1",
     "tap": "10.3.0",
-    "vision": "4.1.1"
+    "vision": "^5.2.0"
   },
   "eslintConfig": {
     "extends": "firstandthird"

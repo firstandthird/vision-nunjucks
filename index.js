@@ -1,14 +1,13 @@
 'use strict';
 const Nunjucks = require('nunjucks');
 /* eslint-disable no-underscore-dangle */
-const defaults = require('lodash.defaults');
 
 let wrapper = {};
 let _env = undefined;
 let compileMode = null;
 const helpers = [];
 
-wrapper.compile = function (src, options, callback) {
+wrapper.compile = function (src, options) {
   const asyncCompileMode = (typeof callback === 'function');
   const filename = Object.hasOwnProperty(options, 'filename') ? options.filename : null;
   const template = Nunjucks.compile(src, _env, filename);
@@ -18,7 +17,7 @@ wrapper.compile = function (src, options, callback) {
       template.render(context, next);
     };
 
-    return callback(null, renderer);
+    return renderer;
   }
 
   return function (context) {
@@ -41,7 +40,7 @@ wrapper.initEnvironment = function(path, compileOptions) {
   return _env;
 };
 
-wrapper.prepare = function (options, next) {
+wrapper.prepare = function (options) {
   compileMode = options.compileMode;
 
   const env = wrapper.initEnvironment(options.path, options.compileOptions);
@@ -49,7 +48,6 @@ wrapper.prepare = function (options, next) {
   helpers.forEach((helper) => {
     env.addFilter(helper.name, helper.fn, (compileMode !== 'sync'));
   });
-  return next();
 };
 
 wrapper.registerHelper = function (name, helper) {
@@ -60,6 +58,6 @@ wrapper.registerHelper = function (name, helper) {
   helpers.push({ name, fn: helper });
 };
 
-wrapper = defaults(wrapper, Nunjucks);
+wrapper = Object.assign(wrapper, Nunjucks);
 
 exports = module.exports = wrapper;
