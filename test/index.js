@@ -9,6 +9,7 @@ tap.beforeEach(async() => {
   server = new Hapi.Server();
   await server.register(require('vision'));
 });
+
 tap.test('render sync', async(test) => {
   server.views({
     engines: {
@@ -22,19 +23,23 @@ tap.test('render sync', async(test) => {
     method: 'get',
     handler: {
       view: {
-        template: 'test'
+        template: 'test',
+        context: {},
       }
     }
   });
-  const res = await server.inject({
-    url: '/'
-  });
-  test.equal(res.statusCode, 200);
-  const expected = fs.readFileSync(`${__dirname}/expected/test.html`, 'utf8');
-  test.equal(res.payload.toString(), expected.toString());
-  test.end();
+  try {
+    const res = await server.inject({ url: '/' });
+    test.equal(res.statusCode, 200);
+    const expected = fs.readFileSync(`${__dirname}/expected/test.html`, 'utf8');
+    test.equal(res.payload.toString(), expected.toString());
+  } catch (e) {
+    test.fail();
+  } finally {
+    test.end();
+  }
 });
-/*
+
 tap.test('render async', async(test) => {
   server.views({
     engines: {
@@ -108,10 +113,10 @@ tap.test('compileOptions', async(test) => {
       }
     }
   });
-  const res = await server.inject({
-    url: '/'
-  });
-  test.equal(res.statusCode, 500);
-  test.end();
+  try {
+    await server.inject({ url: '/' });
+  } catch (e) {
+    test.notEqual(e, null);
+    test.end();
+  }
 });
-*/
