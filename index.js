@@ -36,14 +36,14 @@ wrapper.initEnvironment = function(path, compileOptions) {
   return _env;
 };
 
-wrapper.prepare = function (options, done) {
+wrapper.prepare = function (options, next) {
   compileMode = options.compileMode;
   const env = wrapper.initEnvironment(options.path, options.compileOptions);
 
   helpers.forEach((helper) => {
     env.addFilter(helper.name, helper.fn, (compileMode !== 'sync'));
   });
-  done();
+  return next();
 };
 
 wrapper.registerHelper = function (name, helper) {
