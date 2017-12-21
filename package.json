@@ -25,6 +25,9 @@
     "lodash.defaults": "^4.2.0",
     "nunjucks": "^3.0.1"
   },
+  "scripts": {
+    "test": "tap test/index.js"
+  },
   "devDependencies": {
     "eslint": "^4.13.1",
     "eslint-config-firstandthird": "^4.2.1",
