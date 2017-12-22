@@ -1,11 +1,10 @@
 {
   "name": "vision-nunjucks",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Nunjucks support for vision",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && tap test/index.js",
-    "lint": "eslint ."
+    "test": "tap test/index.js"
   },
   "repository": {
     "type": "git",
@@ -24,9 +23,6 @@
   "dependencies": {
     "lodash.defaults": "^4.2.0",
     "nunjucks": "^3.0.1"
-  },
-  "scripts": {
-    "test": "tap test/index.js"
   },
   "devDependencies": {
     "eslint": "^4.13.1",
