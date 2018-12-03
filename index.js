@@ -51,6 +51,11 @@ wrapper.registerHelper = function (name, helper) {
     _env.addFilter(name, helper, (compileMode !== 'sync'));
     return;
   }
+
+  const duplicatedHelper = helpers.some(registeredHelper => (registeredHelper.name === name));
+
+  if (duplicatedHelper) return;
+
   helpers.push({ name, fn: helper });
 };
 
