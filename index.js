@@ -14,11 +14,36 @@ wrapper.compile = function (src, options, callback) {
   const template = Nunjucks.compile(src, _env, filename);
   if (asyncCompileMode) {
     const renderer = function (context, opts, next) {
-      template.render(context, next);
+      try {
+        template.render(context, next);
+      } catch (e) {
+        console.error(['nunjucks', 'template', 'async', 'error'], {
+          message: 'Error rendering template',
+          context,
+          options,
+          originalError: e
+        });
+        throw e;
+      }
+      
     };
     return callback(null, renderer);
   }
   return function (context) {
+    let output;
+
+    try {
+      output = template.render(context);
+    } catch (e) {
+      console.error(['nunjucks', 'template', 'error'], {
+        message: 'Error rendering template',
+        context,
+        options,
+        originalError: e
+      });
+      throw e;
+    }
+
     return template.render(context);
   };
 };
@@ -41,7 +66,23 @@ wrapper.prepare = function (options, next) {
   const env = wrapper.initEnvironment(options.path, options.compileOptions);
 
   helpers.forEach((helper) => {
-    env.addFilter(helper.name, helper.fn, (compileMode !== 'sync'));
+    env.addFilter(helper.name, (...args) => {
+      let output;
+      try {
+        output = helper.fn(...args);
+      } catch (e) {
+        console.error(['nunjucks', 'filter', 'error'], {
+          message: `Error running helper ${helper.name}`,
+          args,
+          options,
+          helper: helper.name,
+          originalError: e
+        });
+        throw e;
+      }
+
+      return output;
+    }, (compileMode !== 'sync'));
   });
   return next();
 };

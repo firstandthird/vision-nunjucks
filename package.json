@@ -22,14 +22,14 @@
   "homepage": "https://github.com/firstandthird/vision-nunjucks#readme",
   "dependencies": {
     "lodash.defaults": "^4.2.0",
-    "nunjucks": "^3.0.1"
+    "nunjucks": "^3.1.7"
   },
   "devDependencies": {
-    "eslint": "^4.13.1",
+    "eslint": "^5.12.1",
     "eslint-config-firstandthird": "^4.2.1",
     "eslint-plugin-import": "^2.8.0",
-    "hapi": "^17.1.1",
-    "tap": "^11.0.0",
+    "hapi": "^18.0.0",
+    "tap": "^12.4.0",
     "vision": "^5.2.0"
   },
   "eslintConfig": {
