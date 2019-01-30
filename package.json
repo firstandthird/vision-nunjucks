@@ -1,6 +1,6 @@
 {
   "name": "vision-nunjucks",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Nunjucks support for vision",
   "main": "index.js",
   "scripts": {
@@ -22,15 +22,15 @@
   "homepage": "https://github.com/firstandthird/vision-nunjucks#readme",
   "dependencies": {
     "lodash.defaults": "^4.2.0",
-    "nunjucks": "^3.1.4"
+    "nunjucks": "^3.1.7"
   },
   "devDependencies": {
-    "eslint": "^5.9.0",
-    "eslint-config-firstandthird": "^4.3.0",
-    "eslint-plugin-import": "^2.14.0",
-    "hapi": "^17.8.1",
-    "tap": "^12.1.0",
-    "vision": "^5.4.3"
+    "eslint": "^5.12.1",
+    "eslint-config-firstandthird": "^4.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "hapi": "^18.0.0",
+    "tap": "^12.4.0",
+    "vision": "^5.2.0"
   },
   "eslintConfig": {
     "extends": "firstandthird",

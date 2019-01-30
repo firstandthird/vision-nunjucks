@@ -120,3 +120,53 @@ tap.test('compileOptions', async(test) => {
     test.end();
   }
 });
+
+tap.test('Log errors w/ details', async(test) => {
+  server.views({
+    engines: {
+      njk: visionNunjucks
+    },
+    path: `${__dirname}/views`,
+    helpersPath: `${__dirname}/helpers`
+  });
+  server.route({
+    path: '/',
+    method: 'get',
+    handler: {
+      view: {
+        template: 'error',
+        context: {
+          exist: null
+        },
+      }
+    }
+  });
+  const originalConsoleError = console.error;
+  let count = 0;
+
+  try {
+    console.error = (...args) => {
+      const [tags, data] = args;
+      console.log(tags);
+      if (Array.isArray(tags) && tags.includes('nunjucks')) {
+        test.ok(tags.includes('error'), 'Tags include error');
+        test.type(data, 'object', 'Data is an object');
+        test.ok(data.hasOwnProperty('originalError'), 'Data has the original error');
+        test.ok(data.hasOwnProperty('options'), 'Data has an options object');
+        test.ok(data.hasOwnProperty('message'), 'Data has a message');
+        count++;
+      } else {
+        originalConsoleError(...args);
+      }
+    }
+
+    const res = await server.inject({ url: '/' });
+    test.equal(res.statusCode, 500);
+    test.notEqual(count, 0, 'Console.error has run');
+  } catch (e) {
+    test.fail();
+  } finally {
+    console.error = originalConsoleError;
+    test.end();
+  }
+});
