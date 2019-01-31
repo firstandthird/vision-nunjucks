@@ -25,7 +25,7 @@ wrapper.compile = function (src, options, callback) {
         });
         throw e;
       }
-      
+
     };
     return callback(null, renderer);
   }
@@ -92,6 +92,14 @@ wrapper.registerHelper = function (name, helper) {
     _env.addFilter(name, helper, (compileMode !== 'sync'));
     return;
   }
+
+  const duplicatedHelper = helpers.some(registeredHelper => (registeredHelper.name === name));
+
+  if (duplicatedHelper) {
+    console.error(['nunjucks', 'duplicated-helper', 'error'], { message: 'Duplicate helper registered', helper: name });
+    return;
+  }
+
   helpers.push({ name, fn: helper });
 };
 
