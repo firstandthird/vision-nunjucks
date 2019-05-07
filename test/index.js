@@ -1,7 +1,7 @@
 const tap = require('tap');
 const fs = require('fs');
 const visionNunjucks = require('../');
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 let server;
 tap.beforeEach(async() => {
