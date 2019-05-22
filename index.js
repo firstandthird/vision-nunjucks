@@ -48,11 +48,11 @@ wrapper.compile = function (src, options, callback) {
   };
 };
 
-wrapper.clearEnvironment = function() {
+wrapper.clearEnvironment = function () {
   _env = null;
 };
 
-wrapper.initEnvironment = function(path, compileOptions) {
+wrapper.initEnvironment = function (path, compileOptions) {
   if (_env) {
     return _env;
   }
@@ -66,10 +66,10 @@ wrapper.prepare = function (options, next) {
   const env = wrapper.initEnvironment(options.path, options.compileOptions);
 
   helpers.forEach((helper) => {
-    env.addFilter(helper.name, (...args) => {
+    env.addFilter(helper.name, function (...args) {
       let output;
       try {
-        output = helper.fn(...args);
+        output = helper.fn.apply(this, args);
       } catch (e) {
         console.error(['nunjucks', 'filter', 'error'], {
           message: `Error running helper ${helper.name}`,
