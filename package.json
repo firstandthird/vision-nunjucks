@@ -1,6 +1,6 @@
 {
   "name": "vision-nunjucks",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Nunjucks support for vision",
   "main": "index.js",
   "scripts": {
