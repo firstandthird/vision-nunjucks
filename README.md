@@ -18,8 +18,7 @@ server.views({
   engines: {
     njk: require('vision-nunjucks')
   },
-  path: '/views',
-  helpersPath: '/helpers'
+  path: '/views'
 });
 ```
 
@@ -42,20 +41,28 @@ server.route({
 
 ## Helpers
 
-   You can manually register helpers like so:
+   Helpers are functions that will be registered as Nunjucks filters. You can manually register helpers like so:
 
 ```js
 const viewManager = server.views({
   engines: {
     njk: visionNunjucks
   },
-  path: `${__dirname}/views`,
-  compileMode: 'async'
+  path: `${__dirname}/views`
 });
 viewManager.registerHelper('myHelper', (str) => `${str} from test`);
-
 ```
 
+Then in your Nunjucks templates you can do:
+```html
+<p>{{ "hi" | myHelper }}</p>
+```
+
+and get back:
+
+```html
+<p>hi from test</p>
+```
 
 ## Asynchronous Helpers
 
@@ -96,7 +103,7 @@ server.views({
 
 ## Exported Functions:
 
-vision-nunjucks exports the following functions:
+vision-nunjucks exports all of the default functions in [Nunjucks](https://mozilla.github.io/nunjucks/api.html), and additionally provides the following wrapper functions to facilitate using Nunjucks:
 
 - __compile(src, options, callback)__
 
@@ -128,4 +135,4 @@ vision-nunjucks exports the following functions:
 
 - __registerHelper(name, helper)__
 
-  Takes in the name and function for a helper and then registers it in the managed environment.
+  Takes in the name and function for a helper and then registers it in the managed environment.  Calling _initEnvironment_ will purge these from the environment.
